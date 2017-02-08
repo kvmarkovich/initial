@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output} from "@angular/core";
 import {Observable} from "rxjs";
 import {Http} from "@angular/http";
+import {DragulaService} from "ng2-dragula";
 /**
  * Created by kmarkovych on 08.02.2017.
  */
@@ -15,10 +16,21 @@ export class SectionsComponent {
     sections: Section[];
     activeSection: string;
     @Output() sectionChanged: EventEmitter<string> = new EventEmitter<string>();
-    title: string;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private dragulaService: DragulaService) {
         this.readSections();
+        dragulaService.drop.subscribe(this.onDrop.bind(this));
+    }
+
+    onDrop(value) {
+        let [bag, elementMoved, targetContainer, srcContainer] = value;
+        if (targetContainer.children) {
+            let arr = Array.from(targetContainer.children);
+            this.sections = arr.map((li: HTMLLIElement) => {
+                return {title: li.textContent.trim()}
+            });
+            this.writeSections().subscribe();
+        }
     }
 
     showSection(section: Section) {
