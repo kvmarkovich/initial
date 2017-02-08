@@ -11,9 +11,11 @@ import {Http} from "@angular/http";
 })
 export class SectionsComponent {
     private sectionsUrl = 'sections';  // URL to web api
+    sectionsReplaceUrl = "/sections/replace";
     sections: Section[];
     activeSection: string;
     @Output() sectionChanged: EventEmitter<string> = new EventEmitter<string>();
+    title: string;
 
     constructor(private http: Http) {
         this.readSections();
@@ -38,9 +40,28 @@ export class SectionsComponent {
             .map(response => response.json() as Section[]);
     }
 
+    addSection(newSection: HTMLInputElement) {
+        let title = newSection.value;
+        if (!title) return;
+
+        // check for duplicates
+        if (this.sections.map(s => s.title).find(t => t === title)) return;
+
+        const section: Section = {title};
+        this.sections.unshift(section);
+        this.showSection(section);
+
+        // write sections to server and clear add section input box
+        this.writeSections().subscribe(res => newSection.value = "");
+    }
+
+    writeSections() {
+        return this.http.post(this.sectionsReplaceUrl, this.sections);
+    }
+
 
 }
-interface Section {
-    _id: string;
+export interface Section {
+    _id?: string;
     title: string;
 }

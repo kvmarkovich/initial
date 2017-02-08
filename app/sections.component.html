@@ -1,7 +1,7 @@
 <div class="input-group" style="padding-bottom:20px">
-    <input type="text" class="form-control" placeholder="New section name">
+    <input type="text" class="form-control" placeholder="New section name" #newSection>
     <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Add</button>
+        <button class="btn btn-default" type="button" (click)="addSection(newSection)">Add</button>
     </span>
 </div>
 
