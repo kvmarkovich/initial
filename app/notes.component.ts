@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit, OnChanges} from '@angular/core';
 import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/rx';
 import {Observable} from "rxjs";
@@ -7,18 +7,26 @@ import {Observable} from "rxjs";
     selector: 'notes',
     templateUrl: "/app/notes.component.html"
 })
-export class NotesComponent {
+export class NotesComponent implements OnChanges{
 
-    section:string;
-
-    constructor(private http: Http) {
-        this.readNotes();
-    }
+    @Input() section:string;
 
     notes: Note[] = [
         {text: "Note one"},
         {text: "Note two"}
     ]
+
+    constructor(private http: Http) {
+    }
+
+    ngOnChanges(): void {
+        this.readNotes();
+    }
+
+    setSection(section:string) {
+        this.section = section;
+    }
+
 
     readNotes() {
         this.getNotes().subscribe(notes => {
