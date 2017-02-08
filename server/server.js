@@ -22,6 +22,11 @@ db.collection('notes', function(error, notes) {
     db.notes = notes;
 });
 
+db.collection('sections', function(error, sections) {
+    db.sections = sections;
+});
+
+
 var notes = [
     {text: "First note"},
     {text: "Second note"},
@@ -38,6 +43,11 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.get("/sections", function(req,res) {
+    db.sections.find(req.query).toArray(function(err, items) {
+        res.send(items);
+    });
+});
 
 app.get("/notes", function(req,res) {
     db.notes.find(req.query).toArray(function(err, items) {

@@ -1,19 +1,15 @@
 import {Component} from '@angular/core';
 import {Http, URLSearchParams} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/rx';
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'notes',
-    template: `<ul>
-    <li *ngFor="let note of notes">
-        {{note.text}} <button (click)="remove(note._id)">remove</button>
-        <button (click)="moveToTop(note._id)">Move to top</button>
-    </li>
-</ul>
-<textarea [(ngModel)]="text"></textarea>
-<button (click)="add()">Add</button>`
+    templateUrl: "/app/notes.component.html"
 })
 export class NotesComponent {
+
+    section:string;
 
     constructor(private http: Http) {
         this.readNotes();
@@ -25,8 +21,8 @@ export class NotesComponent {
     ]
 
     readNotes() {
-        this.getNotes().then(notes=>{
-            this.notes=notes
+        this.getNotes().subscribe(notes => {
+            this.notes = notes
             console.log(notes);
         });
     }
@@ -36,24 +32,24 @@ export class NotesComponent {
 
 
     add() {
-        let note = {text: this.text}
+        let note = { text: this.text, section: this.section };
         this.addNote(note);
         this.text = "";
     }
 
 
-    addNote(note:Note) {
+    addNote(note: Note) {
         this.http.post(this.notesUrl, note).toPromise()
             .then(response => {
                 console.log("note sent, response", response);
                 this.readNotes();
-            } );
+            });
     }
 
-    remove(id:string) {
+    remove(id: string) {
         let params: URLSearchParams = new URLSearchParams();
         params.set('id', id);
-        this.http.delete(this.notesUrl, { search: params })
+        this.http.delete(this.notesUrl, {search: params})
             .toPromise()
             .then(response => {
                 console.log(
@@ -62,10 +58,11 @@ export class NotesComponent {
             });
     }
 
-    getNotes(): Promise<Note[]> {
-        return this.http.get(this.notesUrl)
-            .toPromise()
-            .then(response => response.json() as Note[]);
+    getNotes(): Observable<Note[]> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('section', this.section);
+        return this.http.get(this.notesUrl, {search:params})
+            .map(response => response.json() as Note[]);
     }
 
     moveToTop(idx) {
