@@ -5,8 +5,9 @@
     </span>
 </div>
 
+<input type="text" class="form-control" placeholder="Section filter" #filter (keyup)="0">
 <ul class="list-group" [dragula]='"sections"'>
-    <li *ngFor="let section of sections"
+    <li *ngFor="let section of sections | sectionFilter: filter.value"
         [ngClass]="{active:section.title==activeSection }"
         (click)="showSection(section)" class="list-group-item">
         {{section.title}}

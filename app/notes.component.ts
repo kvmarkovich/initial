@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, Pipe, PipeTransform} from '@angular/core';
 import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/rx';
 import {Observable} from "rxjs";
@@ -7,9 +7,9 @@ import {Observable} from "rxjs";
     selector: 'notes',
     templateUrl: "/app/notes.component.html"
 })
-export class NotesComponent implements OnChanges{
+export class NotesComponent implements OnChanges {
 
-    @Input() section:string;
+    @Input() section: string;
 
     notes: Note[] = [
         {text: "Note one"},
@@ -23,7 +23,7 @@ export class NotesComponent implements OnChanges{
         this.readNotes();
     }
 
-    setSection(section:string) {
+    setSection(section: string) {
         this.section = section;
     }
 
@@ -40,7 +40,7 @@ export class NotesComponent implements OnChanges{
 
 
     add() {
-        let note = { text: this.text, section: this.section };
+        let note = {text: this.text, section: this.section};
         this.addNote(note);
         this.text = "";
     }
@@ -69,7 +69,7 @@ export class NotesComponent implements OnChanges{
     getNotes(): Observable<Note[]> {
         let params: URLSearchParams = new URLSearchParams();
         params.set('section', this.section);
-        return this.http.get(this.notesUrl, {search:params})
+        return this.http.get(this.notesUrl, {search: params})
             .map(response => response.json() as Note[]);
     }
 
@@ -87,4 +87,15 @@ export class NotesComponent implements OnChanges{
 }
 interface Note {
     text: string;
+}
+
+@Pipe({
+    name: 'noteFilter',
+    pure: true
+})
+export class NotesFilterPipe implements PipeTransform {
+    transform(note: Note[], v: string): Note[] {
+        if (!note) return [];
+        return note.filter(s => s.text.toLowerCase().indexOf(v.toLowerCase()) >= 0);
+    }
 }

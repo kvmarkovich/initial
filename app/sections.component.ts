@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from "@angular/core";
+import {Component, EventEmitter, Output, PipeTransform, Pipe} from "@angular/core";
 import {Observable} from "rxjs";
 import {Http} from "@angular/http";
 import {DragulaService} from "ng2-dragula";
@@ -76,4 +76,16 @@ export class SectionsComponent {
 export interface Section {
     _id?: string;
     title: string;
+}
+
+@Pipe({
+    name: 'sectionFilter',
+    pure: false
+})
+export class SectionFilterPipe implements PipeTransform {
+    transform(sections: Section[], v: string):Section[] {
+        if (!sections) return [];
+        return sections.filter(
+            s => s.title.toLowerCase().startsWith(v.toLowerCase()));
+    }
 }

@@ -13,9 +13,9 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Notes</div>
-
+    <input type="text" class="form-control" placeholder="Notes filter" #filter (keyup)="0">
     <ul class="list-group" ng-repeat="note in notes">
-        <li *ngFor="let note of notes" class="list-group-item">
+        <li *ngFor="let note of notes | noteFilter: filter.value" class="list-group-item">
             {{note.text}}
         </li>
     </ul>
