@@ -57,7 +57,7 @@ app.post("/sections/replace", function(req,resp) {
     if (req.body.length==0) {
         resp.end();
     }
-    db.sections.remove({}, function(err, res) { //TODO: ask about res
+    db.sections.remove({}, function(err, res) {
         if (err) console.log(err);
         db.sections.insert(req.body, function(err, res) {
             if (err) console.log("err after insert",err);
