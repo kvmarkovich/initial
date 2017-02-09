@@ -2,6 +2,7 @@ import {Component, Input, OnInit, OnChanges, Pipe, PipeTransform} from '@angular
 import {Http, URLSearchParams} from '@angular/http';
 import 'rxjs/rx';
 import {Observable} from "rxjs";
+import {NotesServerService} from "./services/notes_server.service";
 
 @Component({
     selector: 'notes',
@@ -20,8 +21,8 @@ export class NotesComponent implements OnChanges {
         {text: "Note two", section:"Old notes", tags:[]}
     ]
 
-    constructor(private http: Http) {
-    }
+    constructor(private http:Http, private notesServer: NotesServerService) {}
+
 
     ngOnChanges(): void {
         this.readNotes();
@@ -33,7 +34,7 @@ export class NotesComponent implements OnChanges {
     }
 
     readNotes() {
-        this.getNotes().subscribe(notes => {
+        this.notesServer.getNotes(this.section).subscribe(notes => {
             this.notes = notes
             console.log(notes);
         });
@@ -68,12 +69,7 @@ export class NotesComponent implements OnChanges {
             });
     }
 
-    getNotes(): Observable<Note[]> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('section', this.section);
-        return this.http.get(this.notesUrl, {search: params})
-            .map(response => response.json() as Note[]);
-    }
+
 
     moveToTop(idx) {
         let note = this.notes[idx];
@@ -87,7 +83,7 @@ export class NotesComponent implements OnChanges {
         this.http.post(this.notesUrl, this.notes);
     }
 }
-interface Note {
+export interface Note {
     text: string;
     section: string;
     tags?: string[];
