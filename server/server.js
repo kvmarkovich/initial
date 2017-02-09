@@ -14,6 +14,9 @@ var db = new Db('tutor',
     new Server("localhost", 27017, {safe: true},
         {auto_reconnect: true}, {}));
 
+var root = __dirname + '/..';
+app.use(express.static(root));
+
 db.open(function(){
     console.log("mongo db is opened!");
 });
@@ -87,6 +90,17 @@ app.delete("/notes", function(req,res) {
     })
 });
 
+app.get("/viewSection/*", function(req, res, next) {
+    var url = req.originalUrl.replace("/viewSection/","");
+    if (url.match("app/*|node_modules/*|systemjs.config.js|css/*|fonts/*") )
+        res.sendFile(url, { root : root });
+    else res.sendFile('index.html', { root : root });
+});
+
+
+app.get("*", function(req, res, next) {
+    res.sendFile('index.html', { root : root });
+});
 
 app.listen(8080);
 

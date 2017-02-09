@@ -7,7 +7,7 @@ import {Note} from "./notes.component";
  */
 @Component({
     selector: 'view-section',
-    templateUrl: '/app/page_not_found.component.html'
+    templateUrl: '/app/view_section.component.html'
 })
 export class ViewSectionComponent implements OnInit {
     private section: string;

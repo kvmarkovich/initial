@@ -13,8 +13,8 @@ import {ViewSectionComponent} from "./view_section.component";
 import {NotesServerService} from "./services/notes_server.service";
 
 const appRoutes: Routes = [
-    { path: 'viewSection/:name', component: ViewSectionComponent },
     {path: '', component: NotesEditorComponent},
+    { path: 'viewSection/:name', component: ViewSectionComponent },
     {path: '**', component: PageNotFoundComponent}
 ];
 
