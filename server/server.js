@@ -90,12 +90,12 @@ app.delete("/notes", function(req,res) {
     })
 });
 
-app.get("/viewSection/*", function(req, res, next) {
-    var url = req.originalUrl.replace("/viewSection/","");
-    if (url.match("app/*|node_modules/*|systemjs.config.js|css/*|fonts/*") )
-        res.sendFile(url, { root : root });
-    else res.sendFile('index.html', { root : root });
-});
+// app.get("/viewSection/*", function(req, res, next) {
+//     var url = req.originalUrl.replace("/viewSection/","");
+//     if (url.match("app/*|node_modules/*|systemjs.config.js|css/*|fonts/*") )
+//         res.sendFile(url, { root : root });
+//     else res.sendFile('index.html', { root : root });
+// });
 
 
 app.get("*", function(req, res, next) {

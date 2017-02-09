@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, PipeTransform, Pipe} from "@angular/core";
+import {Component, EventEmitter, Output, PipeTransform, Pipe, Input} from "@angular/core";
 import {Observable} from "rxjs";
 import {Http} from "@angular/http";
 import {DragulaService} from "ng2-dragula";
@@ -15,6 +15,14 @@ export class SectionsComponent {
     sectionsReplaceUrl = "/sections/replace";
     sections: Section[];
     activeSection: string;
+
+    @Input()
+    set section(section: string) {
+        if (section && section.length > 0) {
+            this.activeSection = section;
+        }
+    }
+
     @Output() sectionChanged: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private http: Http, private dragulaService: DragulaService) {
@@ -83,7 +91,7 @@ export interface Section {
     pure: false
 })
 export class SectionFilterPipe implements PipeTransform {
-    transform(sections: Section[], v: string):Section[] {
+    transform(sections: Section[], v: string): Section[] {
         if (!sections) return [];
         return sections.filter(
             s => s.title.toLowerCase().startsWith(v.toLowerCase()));

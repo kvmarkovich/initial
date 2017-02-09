@@ -4,7 +4,7 @@
             <notes [section]="section"></notes>
         </div>
         <div class="col-md-4">
-            <sections (sectionChanged)="setSection($event)"></sections>
+            <sections [section]="section" (sectionChanged)="setSection($event)"></sections>
         </div>
     </div>
 </div>
