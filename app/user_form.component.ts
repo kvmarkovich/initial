@@ -2,8 +2,10 @@
  * Created by kmarkovych on 09.02.2017.
  */
 
-import {Component} from "@angular/core";
+import {Component, Directive, Attribute} from "@angular/core";
 import {User} from "./model/user";
+import {NG_VALIDATORS, AbstractControl} from "@angular/forms";
+import {Router, ActivatedRoute} from "@angular/router";
 @Component({
     selector: "user-form",
     templateUrl: "/app/user_form.component.html",
@@ -17,4 +19,37 @@ import {User} from "./model/user";
 
 export class UserFormComponent {
     user: User = new User();
+
+    constructor(private route: ActivatedRoute, private router: Router) {
+        this.route.params
+            .map(params=>params["name"])
+            .subscribe(section=>this.section=section);
+    }
+
+}
+
+@Directive({
+    selector: '[validateEqual][ngModel]',
+    providers: [{
+        provide: NG_VALIDATORS,
+        useExisting: EqualToValidator, multi: true
+    }]
+})
+export class EqualToValidator {
+    constructor(@Attribute("validateEqual") public validateEqual: string) {
+    }
+
+    validate(c: AbstractControl): { [key: string]: any } {
+        let v = c.value;
+        let e = c.root.get(this.validateEqual);
+        // subscribe to future changes in password
+        e.valueChanges.subscribe((val: string) => {
+                if (val != v) c.setErrors({validateEqual: false});
+                else c.setErrors(null);
+            }
+        );
+        if (e && v !== e.value) return {validateEqual: false};
+        return null;
+    }
+
 }

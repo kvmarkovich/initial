@@ -2,7 +2,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">User registration form</div>
         <div class="panel-body">
-            <form class="css-form" name="userForm"
+            <form class="css-form" name="userForm" method="post"
                   #userForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
 
                 <div class="form-group">
@@ -21,8 +21,14 @@
                     <label for="password2">Repeat password</label>
                     <input type="text" class="form-control" id="password2"
                            name="password2" placeholder="Repeat password"
-                           #password2="ngModel" [(ngModel)]="user.password2" required>
+                           #password2="ngModel" [(ngModel)]="user.password2" required
+                           validateEqual="password"
+                    >
                 </div>
+                <span *ngIf="password2.errors && !password2.errors.validateEqual && password2.touched">
+                    Passwords should match
+                </span>
+
                 <div class="form-group">
                     <label for="dateOfBirth">Date of birth</label>
                     <input type="text" class="form-control" id="dateOfBirth"
