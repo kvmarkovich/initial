@@ -6,6 +6,7 @@
     <div class="panel-body">
         <div class="form-group">
             <textarea style="min-width:100%;min-height:200px" class="form-control" [(ngModel)]="text"></textarea>
+            <input class="form-control" placeholder="Tags" data-role="tagsinput" [(ngModel)]="tags" />
         </div>
         <button (click)="add()" class="btn btn-primary">Post note</button>
     </div>

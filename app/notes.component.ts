@@ -11,9 +11,13 @@ export class NotesComponent implements OnChanges {
 
     @Input() section: string;
 
+    text: string;
+    tags: string;
+    private notesUrl = '/notes';  // URL to web api
+
     notes: Note[] = [
-        {text: "Note one"},
-        {text: "Note two"}
+        {text: "Note one", section:"Old notes", tags:[]},
+        {text: "Note two", section:"Old notes", tags:[]}
     ]
 
     constructor(private http: Http) {
@@ -23,10 +27,10 @@ export class NotesComponent implements OnChanges {
         this.readNotes();
     }
 
+
     setSection(section: string) {
         this.section = section;
     }
-
 
     readNotes() {
         this.getNotes().subscribe(notes => {
@@ -35,14 +39,12 @@ export class NotesComponent implements OnChanges {
         });
     }
 
-    text: string;
-    private notesUrl = '/notes';  // URL to web api
-
 
     add() {
-        let note = {text: this.text, section: this.section};
+        let note = {text: this.text, section: this.section, tags: this.tags.split(/\s+/)};
         this.addNote(note);
         this.text = "";
+        this.tags = "";
     }
 
 
@@ -87,6 +89,8 @@ export class NotesComponent implements OnChanges {
 }
 interface Note {
     text: string;
+    section: string;
+    tags?: string[];
 }
 
 @Pipe({
