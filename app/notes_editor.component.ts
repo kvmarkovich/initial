@@ -1,5 +1,6 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {NotesComponent} from "./notes.component";
 /**
  * Created by kmarkovych on 09.02.2017.
  */
@@ -9,6 +10,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 export class NotesEditorComponent {
     section: string;
+    @ViewChild(NotesComponent) notesComponent:NotesComponent;
 
     constructor(private route: ActivatedRoute, private router: Router) {
         this.route.params
@@ -17,7 +19,6 @@ export class NotesEditorComponent {
     }
 
     setSection(section: string) {
-        // this.section = section;
         this.router.navigate([section]);
     }
 

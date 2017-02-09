@@ -11,11 +11,12 @@ import {PageNotFoundComponent} from "./page_not_found.component";
 import {NotesEditorComponent} from "./notes_editor.component";
 import {ViewSectionComponent} from "./view_section.component";
 import {NotesServerService} from "./services/notes_server.service";
+import {CanDeactivateNote} from "./services/can_deactivate_note.service";
 
 const appRoutes: Routes = [
-    { path: 'viewSection/:name', component: ViewSectionComponent },
-    { path: ':name', component: NotesEditorComponent },
-    {path: '', component: NotesEditorComponent},
+    {path: 'viewSection/:name', component: ViewSectionComponent},
+    {path: ':name', component: NotesEditorComponent, canDeactivate: [CanDeactivateNote]},
+    {path: '', component: NotesEditorComponent, canDeactivate: [CanDeactivateNote]},
     {path: '**', component: PageNotFoundComponent}
 ];
 
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
     imports: [BrowserModule, FormsModule, HttpModule, DragulaModule, RouterModule.forRoot(appRoutes)],
     declarations: [AppComponent, NotesComponent, SectionsComponent, SectionFilterPipe, NotesFilterPipe,
         NotesEditorComponent, PageNotFoundComponent, ViewSectionComponent],
-    providers: [NotesServerService],
+    providers: [NotesServerService, CanDeactivateNote],
     bootstrap: [AppComponent]
 })
 export class AppModule {
