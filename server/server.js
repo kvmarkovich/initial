@@ -109,7 +109,7 @@ app.post("/users", function(req,res) {
 });
 
 app.get("/checkUserUnique", function(req,res) {
-    res.send( req.query.user.length>2);
+    db.users.find({"name":req.query.user}).toArray(function(err, items){res.send(items.length <= 0)});
 });
 
 
