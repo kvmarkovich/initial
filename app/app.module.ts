@@ -12,7 +12,8 @@ import {NotesEditorComponent} from "./notes_editor.component";
 import {ViewSectionComponent} from "./view_section.component";
 import {NotesServerService} from "./services/notes_server.service";
 import {CanDeactivateNote} from "./services/can_deactivate_note.service";
-import {UserFormComponent} from "./user_form.component";
+import {UserFormComponent, EqualToValidator} from "./user_form.component";
+import {UserUniqueValidator} from "./directives/UserUniqueValidator";
 
 const appRoutes: Routes = [
     {path: 'register', component: UserFormComponent},
@@ -25,7 +26,8 @@ const appRoutes: Routes = [
 @NgModule({
     imports: [BrowserModule, FormsModule, HttpModule, DragulaModule, RouterModule.forRoot(appRoutes)],
     declarations: [AppComponent, NotesComponent, SectionsComponent, SectionFilterPipe, NotesFilterPipe,
-        NotesEditorComponent, PageNotFoundComponent, ViewSectionComponent, UserFormComponent],
+        NotesEditorComponent, PageNotFoundComponent, ViewSectionComponent, UserFormComponent, UserUniqueValidator,
+        EqualToValidator],
     providers: [NotesServerService, CanDeactivateNote],
     bootstrap: [AppComponent]
 })

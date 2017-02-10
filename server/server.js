@@ -97,6 +97,10 @@ app.delete("/notes", function(req,res) {
 //     else res.sendFile('index.html', { root : root });
 // });
 
+app.get("/checkUserUnique", function(req,res) {
+    res.send( req.query.user.length>2);
+});
+
 
 app.get("*", function(req, res, next) {
     res.sendFile('index.html', { root : root });

@@ -19,13 +19,6 @@ import {Router, ActivatedRoute} from "@angular/router";
 
 export class UserFormComponent {
     user: User = new User();
-
-    constructor(private route: ActivatedRoute, private router: Router) {
-        this.route.params
-            .map(params=>params["name"])
-            .subscribe(section=>this.section=section);
-    }
-
 }
 
 @Directive({
