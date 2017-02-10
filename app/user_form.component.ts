@@ -6,6 +6,7 @@ import {Component, Directive, Attribute} from "@angular/core";
 import {User} from "./model/user";
 import {NG_VALIDATORS, AbstractControl} from "@angular/forms";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Http} from "@angular/http";
 @Component({
     selector: "user-form",
     templateUrl: "/app/user_form.component.html",
@@ -19,6 +20,17 @@ import {Router, ActivatedRoute} from "@angular/router";
 
 export class UserFormComponent {
     user: User = new User();
+
+
+    constructor( private http:Http, private router:Router) {
+    }
+
+    onSubmit() {
+        this.http.post("users", this.user).subscribe(res=>{
+            this.router.navigateByUrl("");
+        });
+    }
+
 }
 
 @Directive({

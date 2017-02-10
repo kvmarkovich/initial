@@ -29,6 +29,10 @@ db.collection('sections', function(error, sections) {
     db.sections = sections;
 });
 
+db.collection('users', function(error, users) {
+    db.users = users;
+});
+
 
 var notes = [
     {text: "First note"},
@@ -96,6 +100,13 @@ app.delete("/notes", function(req,res) {
 //         res.sendFile(url, { root : root });
 //     else res.sendFile('index.html', { root : root });
 // });
+
+app.post("/users", function(req,res) {
+    db.users.insert(req.body, function(resp) {
+        req.session.userName = req.body.userName;
+        res.end();
+    });
+});
 
 app.get("/checkUserUnique", function(req,res) {
     res.send( req.query.user.length>2);
